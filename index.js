@@ -243,9 +243,10 @@ Menu.prototype.has = function(slug){
  * @api public
  */
 
-Menu.prototype.moveTo = function(x, y){
+Menu.prototype.moveTo = function(x, y, w){
   this.el.style.top = y;
   this.el.style.left = x;
+  this.el.style.width = w;
   return this;
 };
 
