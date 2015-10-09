@@ -38,7 +38,6 @@ function Menu() {
 
   event.bind(this.el, 'hover', this.deselect.bind(this));
 
-  document.body.appendChild(this.el);
 
   this.onkeydown = this.onkeydown.bind(this);
   event.bind(document.documentElement, 'click', this.hide.bind(this));
