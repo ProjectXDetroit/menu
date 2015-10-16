@@ -135,7 +135,6 @@ Menu.prototype.move = function(direction){
     }
     classes(next).add('selected');
     var a = query('a', next);
-    if (a) a.focus();
   }
 };
 
