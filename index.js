@@ -167,6 +167,7 @@ Menu.prototype.add = function(text, fn){
   var self = this;
   var className = "aggregate";
   if(slug.id > 0) className = "person";
+  if(slug.first) className = className + " first";
 
   var el = domify('<li class="menu-item-' + className + '">' +
                     '<a href="#">' + text + '</a>' +
