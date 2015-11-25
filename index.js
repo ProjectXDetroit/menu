@@ -9,7 +9,7 @@ var Emitter = require('emitter');
 var empty = require('empty');
 var event = require('event');
 var query = require('query');
-
+var $ = window.jQuery;
 /**
  * Expose `Menu`.
  */
@@ -30,7 +30,9 @@ module.exports = Menu;
  * @api public
  */
 
-function Menu() {
+
+
+function Menu(searchType) {
   if (!(this instanceof Menu)) return new Menu();
 
   this.items = {};
@@ -40,10 +42,23 @@ function Menu() {
 
 
   this.onkeydown = this.onkeydown.bind(this);
-  event.bind(document.documentElement, 'click', this.hide.bind(this));
 
   this.on('show', this.bindKeyboardEvents.bind(this));
   this.on('hide', this.unbindKeyboardEvents.bind(this));
+
+  // This event passes in element which closes autocomplete on click
+  this.searchType = searchType;
+
+  var onClickEvent = {
+    search: function(self) {
+      event.bind(document.documentElement, 'click', self.hide.bind(self));
+    },
+    tagSearch: function(self) {
+      event.bind(window.jQuery('.mobile-screen-back')[0], 'click', self.hide.bind(self));
+    }
+  };
+
+  onClickEvent[this.searchType](this);
 }
 
 /**
@@ -178,10 +193,17 @@ Menu.prototype.add = function(text, fn){
     event.bind(links[i], 'click', onclick);
   }
 
+  var onClickEvent = {
+    search: function(self) {
+      self.hide();
+    },
+    tagSearch: function(self) {}
+  }
+
   function onclick(e){
     e.preventDefault();
     e.stopPropagation();
-    self.hide();
+    onClickEvent[self.searchType](self);
     self.emit('select', slug);
     self.emit(slug);
     fn && fn();
